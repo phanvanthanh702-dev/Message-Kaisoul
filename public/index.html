@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisoul - Kết Nối Tâm Hồn</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Màn hình Đăng nhập / Đăng ký -->
+  <div class="auth-overlay" id="auth-overlay">
+    <div class="auth-card">
+      <div class="brand">
+        <i data-lucide="sparkles"></i>
+        <h2>Kaisoul</h2>
+      </div>
+      <div class="auth-tabs">
+        <button id="tab-login" class="active" onclick="switchTab('login')">Đăng nhập</button>
+        <button id="tab-register" onclick="switchTab('register')">Đăng ký</button>
+      </div>
+      <form id="auth-form">
+        <input type="text" id="auth-username" placeholder="Tên tài khoản" required autocomplete="off">
+        <input type="password" id="auth-password" placeholder="Mật khẩu" required>
+        <button type="submit" id="auth-submit-btn" class="btn-primary-block">Đăng nhập</button>
+      </form>
+      <p id="auth-error" class="error-msg"></p>
+    </div>
+  </div>
+
+  <!-- Giao diện chính của ứng dụng -->
+  <div class="app-container hidden" id="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <i data-lucide="sparkles"></i>
+        <h2>Kaisoul</h2>
+      </div>
+      <div class="user-profile">
+        <h4 id="display-user-name">User</h4>
+        <p class="status-badge"><span class="online-dot"></span> Đang hoạt động</p>
+      </div>
+      <div class="features-list">
+        <h3>Tính năng</h3>
+        <ul>
+          <li><i data-lucide="message-square"></i> Chat Thời Gian Thực</li>
+          <li><i data-lucide="video"></i> Gọi Video WebRTC</li>
+          <li><i data-lucide="database"></i> Lưu Lịch Sử Chat</li>
+        </ul>
+      </div>
+      <button id="btn-logout" class="btn-logout"><i data-lucide="log-out"></i> Đăng xuất</button>
+    </aside>
+
+    <!-- Khung Chat -->
+    <main class="chat-area">
+      <header class="chat-header">
+        <div class="chat-title">
+          <h3>Sảnh Trò Chuyện Chung</h3>
+          <span class="room-id">ID Gọi thoại của bạn: <strong id="my-peer-id">...</strong></span>
+        </div>
+        <div class="call-actions">
+          <button id="btn-video-call" class="btn-primary" title="Gọi Video"><i data-lucide="video"></i> Gọi Video</button>
+        </div>
+      </header>
+
+      <div class="messages-container" id="messages">
+        <div class="system-message">Chào mừng bạn trở lại với Kaisoul!</div>
+      </div>
+
+      <form class="chat-input-area" id="chat-form">
+        <input type="text" id="msg-input" placeholder="Nhập tin nhắn..." autocomplete="off" required>
+        <button type="submit" class="btn-send"><i data-lucide="send"></i></button>
+      </form>
+    </main>
+  </div>
+
+  <!-- Modal Cuộc gọi -->
+  <div class="call-modal" id="call-modal">
+    <div class="call-content">
+      <div class="video-grid">
+        <video id="local-video" autoplay muted playsinline></video>
+        <video id="remote-video" autoplay playsinline></video>
+      </div>
+      <div class="call-controls">
+        <button id="btn-end-call" class="btn-danger"><i data-lucide="phone-off"></i> Tắt cuộc gọi</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
